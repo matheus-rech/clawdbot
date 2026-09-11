@@ -3,7 +3,7 @@ import Foundation
 import Network
 import OSLog
 
-struct BridgeNodeInfo: Sendable {
+struct BridgeNodeInfo {
     var nodeId: String
     var displayName: String?
     var platform: String?
@@ -32,20 +32,20 @@ actor BridgeConnectionHandler {
         self.logger = logger
     }
 
-    enum AuthResult: Sendable {
+    enum AuthResult {
         case ok
         case notPaired
         case unauthorized
         case error(code: String, message: String)
     }
 
-    enum PairResult: Sendable {
+    enum PairResult {
         case ok(token: String)
         case rejected
         case error(code: String, message: String)
     }
 
-    private struct FrameContext: Sendable {
+    private struct FrameContext {
         var serverName: String
         var resolveAuth: @Sendable (BridgeHello) async -> AuthResult
         var handlePair: @Sendable (BridgePairRequest) async -> PairResult
@@ -401,7 +401,9 @@ actor BridgeConnectionHandler {
             }
 
             let chunk = try await self.receiveChunk()
-            if chunk.isEmpty { return nil }
+            if chunk.isEmpty {
+                return nil
+            }
             self.buffer.append(chunk)
         }
     }
@@ -424,7 +426,9 @@ actor BridgeConnectionHandler {
     }
 
     private func close(with onDisconnected: (@Sendable (String) async -> Void)? = nil) async {
-        if self.isClosed { return }
+        if self.isClosed {
+            return
+        }
         self.isClosed = true
 
         let nodeId = self.nodeId

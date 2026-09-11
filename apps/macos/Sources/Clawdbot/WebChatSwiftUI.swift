@@ -15,7 +15,7 @@ private enum WebChatSwiftUILayout {
     static let anchorPadding: CGFloat = 8
 }
 
-struct MacGatewayChatTransport: ClawdbotChatTransport, Sendable {
+struct MacGatewayChatTransport: ClawdbotChatTransport {
     func requestHistory(sessionKey: String) async throws -> ClawdbotChatHistoryPayload {
         try await GatewayConnection.shared.chatHistory(sessionKey: sessionKey)
     }
@@ -75,7 +75,9 @@ struct MacGatewayChatTransport: ClawdbotChatTransport, Sendable {
 
                 let stream = await GatewayConnection.shared.subscribe()
                 for await push in stream {
-                    if Task.isCancelled { return }
+                    if Task.isCancelled {
+                        return
+                    }
                     if let evt = Self.mapPushToTransportEvent(push) {
                         continuation.yield(evt)
                     }
@@ -236,7 +238,9 @@ final class WebChatSwiftUIWindowController {
     }
 
     private func installDismissMonitor() {
-        if ProcessInfo.processInfo.isRunningTests { return }
+        if ProcessInfo.processInfo.isRunningTests {
+            return
+        }
         guard self.dismissMonitor == nil, self.window != nil else { return }
         self.dismissMonitor = NSEvent.addGlobalMonitorForEvents(
             matching: [.leftMouseDown, .rightMouseDown, .otherMouseDown])

@@ -3,13 +3,13 @@ import ClawdbotKit
 import OSLog
 import SwiftUI
 
-private struct SessionPreviewItem: Identifiable, Sendable {
+private struct SessionPreviewItem: Identifiable {
     let id: String
     let role: PreviewRole
     let text: String
 }
 
-private enum PreviewRole: String, Sendable {
+private enum PreviewRole: String {
     case user
     case assistant
     case tool
@@ -67,7 +67,9 @@ struct SessionMenuPreviewView: View {
     @State private var status: LoadStatus = .loading
 
     private struct PreviewTimeoutError: LocalizedError {
-        var errorDescription: String? { "preview timeout" }
+        var errorDescription: String? {
+            "preview timeout"
+        }
     }
 
     private enum LoadStatus: Equatable {
@@ -128,7 +130,6 @@ struct SessionMenuPreviewView: View {
         }
     }
 
-    @ViewBuilder
     private func previewRow(_ item: SessionPreviewItem) -> some View {
         HStack(alignment: .top, spacing: 4) {
             Text(item.role.label)
@@ -147,7 +148,9 @@ struct SessionMenuPreviewView: View {
     }
 
     private func roleColor(_ role: PreviewRole) -> Color {
-        if self.isHighlighted { return Color(nsColor: .selectedMenuItemTextColor).opacity(0.9) }
+        if self.isHighlighted {
+            return Color(nsColor: .selectedMenuItemTextColor).opacity(0.9)
+        }
         switch role {
         case .user: return .accentColor
         case .assistant: return .secondary
@@ -232,7 +235,9 @@ struct SessionMenuPreviewView: View {
     }
 
     private static func previewRole(_ raw: String, isTool: Bool) -> PreviewRole {
-        if isTool { return .tool }
+        if isTool {
+            return .tool
+        }
         switch raw.lowercased() {
         case "user": return .user
         case "assistant": return .assistant
@@ -245,14 +250,18 @@ struct SessionMenuPreviewView: View {
     private static func previewText(for message: ClawdbotChatMessage) -> String? {
         let text = message.content.compactMap(\.text).joined(separator: "\n")
             .trimmingCharacters(in: .whitespacesAndNewlines)
-        if !text.isEmpty { return text }
+        if !text.isEmpty {
+            return text
+        }
 
         let toolNames = self.toolNames(for: message)
         if !toolNames.isEmpty {
             let shown = toolNames.prefix(2)
             let overflow = toolNames.count - shown.count
             var label = "call \(shown.joined(separator: ", "))"
-            if overflow > 0 { label += " +\(overflow)" }
+            if overflow > 0 {
+                label += " +\(overflow)"
+            }
             return label
         }
 
@@ -264,7 +273,9 @@ struct SessionMenuPreviewView: View {
     }
 
     private static func isToolCall(_ message: ClawdbotChatMessage) -> Bool {
-        if message.toolName?.nonEmpty != nil { return true }
+        if message.toolName?.nonEmpty != nil {
+            return true
+        }
         return message.content.contains { $0.name?.nonEmpty != nil || $0.type?.lowercased() == "toolcall" }
     }
 
@@ -285,7 +296,9 @@ struct SessionMenuPreviewView: View {
         let types = message.content.compactMap { content -> String? in
             let raw = content.type?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
             guard let raw, !raw.isEmpty else { return nil }
-            if raw == "text" || raw == "toolcall" { return nil }
+            if raw == "text" || raw == "toolcall" {
+                return nil
+            }
             return raw
         }
         guard let first = types.first else { return nil }

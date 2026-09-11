@@ -18,7 +18,10 @@ public final class GatewayDiscoveryModel {
     }
 
     public struct DiscoveredGateway: Identifiable, Equatable, Sendable {
-        public var id: String { self.stableID }
+        public var id: String {
+            self.stableID
+        }
+
         public var displayName: String
         public var lanHost: String?
         public var tailnetDns: String?
@@ -79,7 +82,9 @@ public final class GatewayDiscoveryModel {
     }
 
     public func start() {
-        if !self.browsers.isEmpty { return }
+        if !self.browsers.isEmpty {
+            return
+        }
 
         for domain in ClawdbotBonjour.bridgeServiceDomains {
             let params = NWParameters.tcp
@@ -141,7 +146,9 @@ public final class GatewayDiscoveryModel {
         }
         var seen = Set<String>()
         let deduped = next.filter { gateway in
-            if seen.contains(gateway.stableID) { return false }
+            if seen.contains(gateway.stableID) {
+                return false
+            }
             seen.insert(gateway.stableID)
             return true
         }
@@ -216,14 +223,20 @@ public final class GatewayDiscoveryModel {
         guard self.wideAreaFallbackTask == nil else { return }
         self.wideAreaFallbackTask = Task.detached(priority: .utility) { [weak self] in
             guard let self else { return }
-            if Task.isCancelled { return }
+            if Task.isCancelled {
+                return
+            }
             let hasResults = await MainActor.run {
                 !(self.gatewaysByDomain[domain]?.isEmpty ?? true)
             }
-            if hasResults { return }
+            if hasResults {
+                return
+            }
 
             let beacons = WideAreaGatewayDiscovery.discover(timeoutSeconds: 3.0)
-            if beacons.isEmpty { return }
+            if beacons.isEmpty {
+                return
+            }
 
             await MainActor.run { [weak self] in
                 guard let self else { return }
@@ -265,7 +278,9 @@ public final class GatewayDiscoveryModel {
         }
 
         if let failed = states.first(where: { state in
-            if case .failed = state { return true }
+            if case .failed = state {
+                return true
+            }
             return false
         }) {
             if case let .failed(err) = failed {
@@ -275,7 +290,9 @@ public final class GatewayDiscoveryModel {
         }
 
         if let waiting = states.first(where: { state in
-            if case .waiting = state { return true }
+            if case .waiting = state {
+                return true
+            }
             return false
         }) {
             if case let .waiting(err) = waiting {
@@ -284,12 +301,24 @@ public final class GatewayDiscoveryModel {
             }
         }
 
-        if states.contains(where: { if case .ready = $0 { true } else { false } }) {
+        if states.contains(where: {
+            if case .ready = $0 {
+                true
+            } else {
+                false
+            }
+        }) {
             self.statusText = "Searching…"
             return
         }
 
-        if states.contains(where: { if case .setup = $0 { true } else { false } }) {
+        if states.contains(where: {
+            if case .setup = $0 {
+                true
+            } else {
+                false
+            }
+        }) {
             self.statusText = "Setup"
             return
         }
@@ -521,7 +550,9 @@ public final class GatewayDiscoveryModel {
     private nonisolated static func normalizeHostToken(_ raw: String?) -> String? {
         guard let raw else { return nil }
         let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
-        if trimmed.isEmpty { return nil }
+        if trimmed.isEmpty {
+            return nil
+        }
         let lower = trimmed.lowercased()
         let strippedTrailingDot = lower.hasSuffix(".")
             ? String(lower.dropLast())
@@ -538,14 +569,18 @@ public final class GatewayDiscoveryModel {
         guard let raw else { return nil }
         let prettified = Self.prettifyInstanceName(raw)
         let trimmed = prettified.trimmingCharacters(in: .whitespacesAndNewlines)
-        if trimmed.isEmpty { return nil }
+        if trimmed.isEmpty {
+            return nil
+        }
         return trimmed.lowercased()
     }
 
     private nonisolated static func normalizeServiceToken(_ raw: String?) -> String? {
         guard let raw else { return nil }
         let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
-        if trimmed.isEmpty { return nil }
+        if trimmed.isEmpty {
+            return nil
+        }
         return trimmed.lowercased()
     }
 }

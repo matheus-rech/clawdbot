@@ -23,7 +23,10 @@ struct GeneralSettings: View {
     @State private var remoteStatus: RemoteStatus = .idle
     @State private var showRemoteAdvanced = false
     private let isPreview = ProcessInfo.processInfo.isPreview
-    private var isNixMode: Bool { ProcessInfo.processInfo.isNixMode }
+    private var isNixMode: Bool {
+        ProcessInfo.processInfo.isNixMode
+    }
+
     @State private var lastLocationModeRaw: String = ClawdbotLocationMode.off.rawValue
 
     var body: some View {

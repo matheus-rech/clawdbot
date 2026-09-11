@@ -3,10 +3,10 @@ import Network
 import Observation
 import SwiftUI
 
-struct HealthSnapshot: Codable, Sendable {
-    struct Telegram: Codable, Sendable {
-        struct Probe: Codable, Sendable {
-            struct Bot: Codable, Sendable {
+struct HealthSnapshot: Codable {
+    struct Telegram: Codable {
+        struct Probe: Codable {
+            struct Bot: Codable {
                 let id: Int?
                 let username: String?
             }
@@ -22,8 +22,8 @@ struct HealthSnapshot: Codable, Sendable {
         let probe: Probe?
     }
 
-    struct Web: Codable, Sendable {
-        struct Connect: Codable, Sendable {
+    struct Web: Codable {
+        struct Connect: Codable {
             let ok: Bool
             let status: Int?
             let error: String?
@@ -35,13 +35,13 @@ struct HealthSnapshot: Codable, Sendable {
         let connect: Connect?
     }
 
-    struct SessionInfo: Codable, Sendable {
+    struct SessionInfo: Codable {
         let key: String
         let updatedAt: Double?
         let age: Double?
     }
 
-    struct Sessions: Codable, Sendable {
+    struct Sessions: Codable {
         let path: String
         let count: Int
         let recent: [SessionInfo]
@@ -127,7 +127,9 @@ final class HealthStore {
                 }
             } else {
                 self.lastError = "health output not JSON"
-                if onDemand { self.snapshot = nil }
+                if onDemand {
+                    self.snapshot = nil
+                }
                 if previousError != self.lastError {
                     Self.logger.warning("health refresh failed: output not JSON")
                 }
@@ -135,7 +137,9 @@ final class HealthStore {
         } catch {
             let desc = error.localizedDescription
             self.lastError = desc
-            if onDemand { self.snapshot = nil }
+            if onDemand {
+                self.snapshot = nil
+            }
             if previousError != desc {
                 Self.logger.error("health refresh failed \(desc, privacy: .public)")
             }
@@ -165,8 +169,12 @@ final class HealthStore {
     }
 
     var summaryLine: String {
-        if self.isRefreshing { return "Health check running…" }
-        if let error = self.lastError { return "Health check failed: \(error)" }
+        if self.isRefreshing {
+            return "Health check running…"
+        }
+        if let error = self.lastError {
+            return "Health check failed: \(error)"
+        }
         guard let snap = self.snapshot else { return "Health check pending" }
         if !snap.web.linked {
             if let tg = snap.telegram, tg.configured {
@@ -232,10 +240,16 @@ final class HealthStore {
 
 func msToAge(_ ms: Double) -> String {
     let minutes = Int(round(ms / 60000))
-    if minutes < 1 { return "just now" }
-    if minutes < 60 { return "\(minutes)m" }
+    if minutes < 1 {
+        return "just now"
+    }
+    if minutes < 60 {
+        return "\(minutes)m"
+    }
     let hours = Int(round(Double(minutes) / 60))
-    if hours < 48 { return "\(hours)h" }
+    if hours < 48 {
+        return "\(hours)h"
+    }
     let days = Int(round(Double(hours) / 24))
     return "\(days)d"
 }

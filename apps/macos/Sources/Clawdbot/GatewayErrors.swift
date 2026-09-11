@@ -20,14 +20,18 @@ struct GatewayResponseError: LocalizedError, @unchecked Sendable {
     }
 
     var errorDescription: String? {
-        if self.code == "GATEWAY_ERROR" { return "\(self.method): \(self.message)" }
+        if self.code == "GATEWAY_ERROR" {
+            return "\(self.method): \(self.message)"
+        }
         return "\(self.method): [\(self.code)] \(self.message)"
     }
 }
 
-struct GatewayDecodingError: LocalizedError, Sendable {
+struct GatewayDecodingError: LocalizedError {
     let method: String
     let message: String
 
-    var errorDescription: String? { "\(self.method): \(self.message)" }
+    var errorDescription: String? {
+        "\(self.method): \(self.message)"
+    }
 }

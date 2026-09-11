@@ -1,7 +1,7 @@
 import ClawdbotKit
 import Foundation
 
-struct WideAreaGatewayBeacon: Sendable, Equatable {
+struct WideAreaGatewayBeacon: Equatable {
     var instanceName: String
     var displayName: String
     var host: String
@@ -19,7 +19,7 @@ enum WideAreaGatewayDiscovery {
     private static let digPath = "/usr/bin/dig"
     private static let defaultTimeoutSeconds: TimeInterval = 0.2
 
-    struct DiscoveryContext: Sendable {
+    struct DiscoveryContext {
         var tailscaleStatus: @Sendable () -> String?
         var dig: @Sendable (_ args: [String], _ timeout: TimeInterval) -> String?
 
@@ -64,7 +64,9 @@ enum WideAreaGatewayDiscovery {
         var beacons: [WideAreaGatewayBeacon] = []
         for raw in ptrLines {
             let ptr = raw.trimmingCharacters(in: .whitespacesAndNewlines)
-            if ptr.isEmpty { continue }
+            if ptr.isEmpty {
+                continue
+            }
             let ptrName = ptr.hasSuffix(".") ? String(ptr.dropLast()) : ptr
             let suffix = "._clawdbot-bridge._tcp.\(domainTrimmed)"
             let rawInstanceName = ptrName.hasSuffix(suffix)
@@ -118,13 +120,14 @@ enum WideAreaGatewayDiscovery {
         }
 
         var seen = Set<String>()
-        let ordered = ips.filter { value in
+        return ips.filter { value in
             guard self.isTailnetIPv4(value) else { return false }
-            if seen.contains(value) { return false }
+            if seen.contains(value) {
+                return false
+            }
             seen.insert(value)
             return true
         }
-        return ordered
     }
 
     private static func readTailscaleStatus() -> String? {
@@ -160,7 +163,9 @@ enum WideAreaGatewayDiscovery {
         let probeName = "_clawdbot-bridge._tcp.\(domainTrimmed)"
 
         while !candidates.isEmpty {
-            if remaining() <= 0 { break }
+            if remaining() <= 0 {
+                break
+            }
             let ip = candidates.removeFirst()
             if let stdout = dig(
                 ["+short", "+time=1", "+tries=1", "@\(ip)", probeName, "PTR"],
@@ -225,7 +230,9 @@ enum WideAreaGatewayDiscovery {
         var tokens: [String] = []
         for raw in lines {
             let line = raw.trimmingCharacters(in: .whitespacesAndNewlines)
-            if line.isEmpty { continue }
+            if line.isEmpty {
+                continue
+            }
             let matches = line.matches(of: /"([^"]*)"/)
             for match in matches {
                 tokens.append(self.unescapeTxt(String(match.1)))
@@ -249,7 +256,9 @@ enum WideAreaGatewayDiscovery {
             let rawValue = String(token[token.index(after: idx)...])
                 .trimmingCharacters(in: .whitespacesAndNewlines)
             let value = self.decodeDnsSdEscapes(rawValue)
-            if !key.isEmpty { out[key] = value }
+            if !key.isEmpty {
+                out[key] = value
+            }
         }
         return out
     }
@@ -262,9 +271,13 @@ enum WideAreaGatewayDiscovery {
 
     private static func isTailnetIPv4(_ value: String) -> Bool {
         let parts = value.split(separator: ".")
-        if parts.count != 4 { return false }
+        if parts.count != 4 {
+            return false
+        }
         let octets = parts.compactMap { Int($0) }
-        if octets.count != 4 { return false }
+        if octets.count != 4 {
+            return false
+        }
         let a = octets[0]
         let b = octets[1]
         return a == 100 && b >= 64 && b <= 127
@@ -300,7 +313,9 @@ enum WideAreaGatewayDiscovery {
         }
         flushPending()
 
-        if bytes.isEmpty { return value }
+        if bytes.isEmpty {
+            return value
+        }
         if let decoded = String(bytes: bytes, encoding: .utf8) {
             return decoded
         }
@@ -331,5 +346,7 @@ private struct TailscaleStatus: Decodable {
 }
 
 extension Collection {
-    fileprivate var nonEmpty: Self? { isEmpty ? nil : self }
+    fileprivate var nonEmpty: Self? {
+        isEmpty ? nil : self
+    }
 }

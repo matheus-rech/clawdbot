@@ -2,17 +2,23 @@ import ClawdbotIPC
 import Foundation
 import OSLog
 
-// Lightweight SemVer helper (major.minor.patch only) for gateway compatibility checks.
-struct Semver: Comparable, CustomStringConvertible, Sendable {
+/// Lightweight SemVer helper (major.minor.patch only) for gateway compatibility checks.
+struct Semver: Comparable, CustomStringConvertible {
     let major: Int
     let minor: Int
     let patch: Int
 
-    var description: String { "\(self.major).\(self.minor).\(self.patch)" }
+    var description: String {
+        "\(self.major).\(self.minor).\(self.patch)"
+    }
 
     static func < (lhs: Semver, rhs: Semver) -> Bool {
-        if lhs.major != rhs.major { return lhs.major < rhs.major }
-        if lhs.minor != rhs.minor { return lhs.minor < rhs.minor }
+        if lhs.major != rhs.major {
+            return lhs.major < rhs.major
+        }
+        if lhs.minor != rhs.minor {
+            return lhs.minor < rhs.minor
+        }
         return lhs.patch < rhs.patch
     }
 
@@ -81,7 +87,9 @@ enum GatewayEnvironment {
     static func gatewayPort() -> Int {
         if let raw = ProcessInfo.processInfo.environment["CLAWDBOT_GATEWAY_PORT"] {
             let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
-            if let parsed = Int(trimmed), parsed > 0 { return parsed }
+            if let parsed = Int(trimmed), parsed > 0 {
+                return parsed
+            }
         }
         if let configPort = ClawdbotConfigFile.gatewayPort(), configPort > 0 {
             return configPort
@@ -95,7 +103,7 @@ enum GatewayEnvironment {
         return Semver.parse(bundleVersion)
     }
 
-    // Exposed for tests so we can inject fake version checks without rewriting bundle metadata.
+    /// Exposed for tests so we can inject fake version checks without rewriting bundle metadata.
     static func expectedGatewayVersion(from versionString: String?) -> Semver? {
         Semver.parse(versionString)
     }

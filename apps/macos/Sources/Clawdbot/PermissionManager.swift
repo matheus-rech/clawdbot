@@ -292,7 +292,7 @@ final class LocationPermissionRequester: NSObject, CLLocationManagerDelegate {
         }
     }
 
-    // nonisolated for Swift 6 strict concurrency compatibility
+    /// nonisolated for Swift 6 strict concurrency compatibility
     nonisolated func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         let status = manager.authorizationStatus
         Task { @MainActor in
@@ -402,7 +402,9 @@ final class PermissionMonitor {
     }
 
     private func checkStatus(force: Bool) async {
-        if self.isChecking { return }
+        if self.isChecking {
+            return
+        }
         let now = Date()
         if !force, let lastCheck, now.timeIntervalSince(lastCheck) < self.minimumCheckInterval {
             return

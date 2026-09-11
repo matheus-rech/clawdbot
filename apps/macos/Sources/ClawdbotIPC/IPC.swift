@@ -407,7 +407,7 @@ extension Request: Codable {
     }
 }
 
-// Shared transport settings
+/// Shared transport settings
 public let controlSocketPath =
     FileManager.default
         .homeDirectoryForCurrentUser

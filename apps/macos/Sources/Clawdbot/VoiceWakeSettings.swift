@@ -28,7 +28,9 @@ struct VoiceWakeSettings: View {
     private struct AudioInputDevice: Identifiable, Equatable {
         let uid: String
         let name: String
-        var id: String { self.uid }
+        var id: String {
+            self.uid
+        }
     }
 
     private struct IndexedWord: Identifiable {
@@ -265,10 +267,18 @@ struct VoiceWakeSettings: View {
                     onUpdate: { newState in
                         DispatchQueue.main.async { [self] in
                             self.testState = newState
-                            if case .detected = newState { self.isTesting = false }
-                            if case .failed = newState { self.isTesting = false }
-                            if case .detected = newState { self.testTimeoutTask?.cancel() }
-                            if case .failed = newState { self.testTimeoutTask?.cancel() }
+                            if case .detected = newState {
+                                self.isTesting = false
+                            }
+                            if case .failed = newState {
+                                self.isTesting = false
+                            }
+                            if case .detected = newState {
+                                self.testTimeoutTask?.cancel()
+                            }
+                            if case .failed = newState {
+                                self.testTimeoutTask?.cancel()
+                            }
                         }
                     })
                 self.testTimeoutTask?.cancel()

@@ -369,22 +369,34 @@ extension ConnectionsStore {
             guard !key.isEmpty else { return }
             var payload: [String: Any] = [:]
             let slug = self.trimmed(entry.slug)
-            if !slug.isEmpty { payload["slug"] = slug }
-            if entry.requireMention { payload["requireMention"] = true }
+            if !slug.isEmpty {
+                payload["slug"] = slug
+            }
+            if entry.requireMention {
+                payload["requireMention"] = true
+            }
             if ["off", "own", "all", "allowlist"].contains(entry.reactionNotifications) {
                 payload["reactionNotifications"] = entry.reactionNotifications
             }
             let users = self.splitCsv(entry.users)
-            if !users.isEmpty { payload["users"] = users }
+            if !users.isEmpty {
+                payload["users"] = users
+            }
             let channels: [String: Any] = entry.channels.reduce(into: [:]) { channelsResult, channel in
                 let channelKey = self.trimmed(channel.key)
                 guard !channelKey.isEmpty else { return }
                 var channelPayload: [String: Any] = [:]
-                if !channel.allow { channelPayload["allow"] = false }
-                if channel.requireMention { channelPayload["requireMention"] = true }
+                if !channel.allow {
+                    channelPayload["allow"] = false
+                }
+                if channel.requireMention {
+                    channelPayload["requireMention"] = true
+                }
                 channelsResult[channelKey] = channelPayload
             }
-            if !channels.isEmpty { payload["channels"] = channels }
+            if !channels.isEmpty {
+                payload["channels"] = channels
+            }
             result[key] = payload
         }
         return guilds.isEmpty ? nil : guilds
@@ -459,9 +471,15 @@ extension ConnectionsStore {
     private func stringList(from values: [AnyCodable]?) -> String {
         guard let values else { return "" }
         let strings = values.compactMap { entry -> String? in
-            if let str = entry.stringValue { return str }
-            if let intVal = entry.intValue { return String(intVal) }
-            if let doubleVal = entry.doubleValue { return String(Int(doubleVal)) }
+            if let str = entry.stringValue {
+                return str
+            }
+            if let intVal = entry.intValue {
+                return String(intVal)
+            }
+            if let doubleVal = entry.doubleValue {
+                return String(Int(doubleVal))
+            }
             return nil
         }
         return strings.joined(separator: ", ")

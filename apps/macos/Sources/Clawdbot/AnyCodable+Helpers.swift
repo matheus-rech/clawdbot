@@ -2,12 +2,29 @@ import ClawdbotProtocol
 import Foundation
 
 extension AnyCodable {
-    var stringValue: String? { self.value as? String }
-    var boolValue: Bool? { self.value as? Bool }
-    var intValue: Int? { self.value as? Int }
-    var doubleValue: Double? { self.value as? Double }
-    var dictionaryValue: [String: AnyCodable]? { self.value as? [String: AnyCodable] }
-    var arrayValue: [AnyCodable]? { self.value as? [AnyCodable] }
+    var stringValue: String? {
+        self.value as? String
+    }
+
+    var boolValue: Bool? {
+        self.value as? Bool
+    }
+
+    var intValue: Int? {
+        self.value as? Int
+    }
+
+    var doubleValue: Double? {
+        self.value as? Double
+    }
+
+    var dictionaryValue: [String: AnyCodable]? {
+        self.value as? [String: AnyCodable]
+    }
+
+    var arrayValue: [AnyCodable]? {
+        self.value as? [AnyCodable]
+    }
 
     var foundationValue: Any {
         switch self.value {

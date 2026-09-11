@@ -16,9 +16,17 @@ struct NodeInfo: Identifiable, Codable {
     let paired: Bool?
     let connected: Bool?
 
-    var id: String { self.nodeId }
-    var isConnected: Bool { self.connected ?? false }
-    var isPaired: Bool { self.paired ?? false }
+    var id: String {
+        self.nodeId
+    }
+
+    var isConnected: Bool {
+        self.connected ?? false
+    }
+
+    var isPaired: Bool {
+        self.paired ?? false
+    }
 }
 
 private struct NodeListResponse: Codable {
@@ -64,7 +72,9 @@ final class NodesStore {
     }
 
     func refresh() async {
-        if self.isLoading { return }
+        if self.isLoading {
+            return
+        }
         self.statusMessage = nil
         self.isLoading = true
         defer { self.isLoading = false }
@@ -91,10 +101,16 @@ final class NodesStore {
     }
 
     private static func isCancelled(_ error: Error) -> Bool {
-        if error is CancellationError { return true }
-        if let urlError = error as? URLError, urlError.code == .cancelled { return true }
+        if error is CancellationError {
+            return true
+        }
+        if let urlError = error as? URLError, urlError.code == .cancelled {
+            return true
+        }
         let nsError = error as NSError
-        if nsError.domain == NSURLErrorDomain, nsError.code == NSURLErrorCancelled { return true }
+        if nsError.domain == NSURLErrorDomain, nsError.code == NSURLErrorCancelled {
+            return true
+        }
         return false
     }
 }

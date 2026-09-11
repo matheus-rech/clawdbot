@@ -10,7 +10,6 @@ extension ConnectionsSettings {
         }
     }
 
-    @ViewBuilder
     func providerHeaderActions(_ provider: ConnectionProvider) -> some View {
         HStack(spacing: 8) {
             if provider == .whatsapp {

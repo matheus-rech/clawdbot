@@ -7,7 +7,7 @@ actor DiagnosticsFileLog {
     private let maxBytes: Int64 = 5 * 1024 * 1024
     private let maxBackups = 5
 
-    struct Record: Codable, Sendable {
+    struct Record: Codable {
         let ts: String
         let pid: Int32
         let category: String
@@ -96,7 +96,9 @@ actor DiagnosticsFileLog {
               let size = attrs[.size] as? NSNumber
         else { return }
 
-        if size.int64Value < self.maxBytes { return }
+        if size.int64Value < self.maxBytes {
+            return
+        }
 
         let fm = FileManager.default
 

@@ -116,7 +116,11 @@ actor MacNodeBridgePairingClient {
         line.append(0x0A)
         try await withCheckedThrowingContinuation(isolation: nil) { (cont: CheckedContinuation<Void, Error>) in
             connection.send(content: line, completion: .contentProcessed { err in
-                if let err { cont.resume(throwing: err) } else { cont.resume(returning: ()) }
+                if let err {
+                    cont.resume(throwing: err)
+                } else {
+                    cont.resume(returning: ())
+                }
             })
         }
     }
@@ -159,7 +163,9 @@ actor MacNodeBridgePairingClient {
             }
 
             let chunk = try await self.receiveChunk(over: connection)
-            if chunk.isEmpty { return nil }
+            if chunk.isEmpty {
+                return nil
+            }
             self.lineBuffer.append(chunk)
         }
     }
@@ -171,9 +177,15 @@ actor MacNodeBridgePairingClient {
         let states = AsyncStream<NWConnection.State> { continuation in
             connection.stateUpdateHandler = { state in
                 continuation.yield(state)
-                if case .ready = state { continuation.finish() }
-                if case .failed = state { continuation.finish() }
-                if case .cancelled = state { continuation.finish() }
+                if case .ready = state {
+                    continuation.finish()
+                }
+                if case .failed = state {
+                    continuation.finish()
+                }
+                if case .cancelled = state {
+                    continuation.finish()
+                }
             }
         }
         connection.start(queue: queue)
