@@ -1,7 +1,7 @@
 import Foundation
 import OSLog
 
-enum GatewayEndpointState: Sendable, Equatable {
+enum GatewayEndpointState: Equatable {
     case ready(mode: AppState.ConnectionMode, url: URL, token: String?, password: String?)
     case unavailable(mode: AppState.ConnectionMode, reason: String)
 }
@@ -15,7 +15,7 @@ actor GatewayEndpointStore {
     static let shared = GatewayEndpointStore()
     private static let supportedBindModes: Set<String> = ["loopback", "tailnet", "lan", "auto"]
 
-    struct Deps: Sendable {
+    struct Deps {
         let mode: @Sendable () async -> AppState.ConnectionMode
         let token: @Sendable () -> String?
         let password: @Sendable () -> String?

@@ -6,10 +6,12 @@ import OSLog
 actor MacNodeBridgeSession {
     private struct TimeoutError: LocalizedError {
         var message: String
-        var errorDescription: String? { self.message }
+        var errorDescription: String? {
+            self.message
+        }
     }
 
-    enum State: Sendable, Equatable {
+    enum State: Equatable {
         case idle
         case connecting
         case connected(serverName: String)

@@ -13,8 +13,11 @@ struct ControlHeartbeatEvent: Codable {
     let reason: String?
 }
 
-struct ControlAgentEvent: Codable, Sendable, Identifiable {
-    var id: String { "\(self.runId)-\(self.seq)" }
+struct ControlAgentEvent: Codable, Identifiable {
+    var id: String {
+        "\(self.runId)-\(self.seq)"
+    }
+
     let runId: String
     let seq: Int
     let stream: String

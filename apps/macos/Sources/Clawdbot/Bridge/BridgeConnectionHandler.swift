@@ -3,7 +3,7 @@ import Foundation
 import Network
 import OSLog
 
-struct BridgeNodeInfo: Sendable {
+struct BridgeNodeInfo {
     var nodeId: String
     var displayName: String?
     var platform: String?
@@ -32,20 +32,20 @@ actor BridgeConnectionHandler {
         self.logger = logger
     }
 
-    enum AuthResult: Sendable {
+    enum AuthResult {
         case ok
         case notPaired
         case unauthorized
         case error(code: String, message: String)
     }
 
-    enum PairResult: Sendable {
+    enum PairResult {
         case ok(token: String)
         case rejected
         case error(code: String, message: String)
     }
 
-    private struct FrameContext: Sendable {
+    private struct FrameContext {
         var serverName: String
         var resolveAuth: @Sendable (BridgeHello) async -> AuthResult
         var handlePair: @Sendable (BridgePairRequest) async -> PairResult

@@ -3,10 +3,10 @@ import Network
 import Observation
 import SwiftUI
 
-struct HealthSnapshot: Codable, Sendable {
-    struct Telegram: Codable, Sendable {
-        struct Probe: Codable, Sendable {
-            struct Bot: Codable, Sendable {
+struct HealthSnapshot: Codable {
+    struct Telegram: Codable {
+        struct Probe: Codable {
+            struct Bot: Codable {
                 let id: Int?
                 let username: String?
             }
@@ -22,8 +22,8 @@ struct HealthSnapshot: Codable, Sendable {
         let probe: Probe?
     }
 
-    struct Web: Codable, Sendable {
-        struct Connect: Codable, Sendable {
+    struct Web: Codable {
+        struct Connect: Codable {
             let ok: Bool
             let status: Int?
             let error: String?
@@ -35,13 +35,13 @@ struct HealthSnapshot: Codable, Sendable {
         let connect: Connect?
     }
 
-    struct SessionInfo: Codable, Sendable {
+    struct SessionInfo: Codable {
         let key: String
         let updatedAt: Double?
         let age: Double?
     }
 
-    struct Sessions: Codable, Sendable {
+    struct Sessions: Codable {
         let path: String
         let count: Int
         let recent: [SessionInfo]

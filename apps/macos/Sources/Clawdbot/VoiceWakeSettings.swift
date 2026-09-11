@@ -28,7 +28,9 @@ struct VoiceWakeSettings: View {
     private struct AudioInputDevice: Identifiable, Equatable {
         let uid: String
         let name: String
-        var id: String { self.uid }
+        var id: String {
+            self.uid
+        }
     }
 
     private struct IndexedWord: Identifiable {

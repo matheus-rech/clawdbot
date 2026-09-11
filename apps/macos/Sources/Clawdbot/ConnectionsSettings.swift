@@ -9,7 +9,9 @@ struct ConnectionsSettings: View {
         case signal
         case imessage
 
-        var id: String { self.rawValue }
+        var id: String {
+            self.rawValue
+        }
 
         var sortOrder: Int {
             switch self {

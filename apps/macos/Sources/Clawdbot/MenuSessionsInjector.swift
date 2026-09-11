@@ -894,8 +894,7 @@ final class MenuSessionsInjector: NSObject, NSMenuDelegate {
 
     private func makeHostedView(rootView: AnyView, width: CGFloat, highlighted: Bool) -> NSView {
         if highlighted {
-            let container = HighlightedMenuItemHostView(rootView: rootView, width: width)
-            return container
+            return HighlightedMenuItemHostView(rootView: rootView, width: width)
         }
 
         let hosting = NSHostingView(rootView: rootView)

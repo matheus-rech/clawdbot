@@ -1,7 +1,7 @@
 import ClawdbotKit
 import Foundation
 
-struct WideAreaGatewayBeacon: Sendable, Equatable {
+struct WideAreaGatewayBeacon: Equatable {
     var instanceName: String
     var displayName: String
     var host: String
@@ -19,7 +19,7 @@ enum WideAreaGatewayDiscovery {
     private static let digPath = "/usr/bin/dig"
     private static let defaultTimeoutSeconds: TimeInterval = 0.2
 
-    struct DiscoveryContext: Sendable {
+    struct DiscoveryContext {
         var tailscaleStatus: @Sendable () -> String?
         var dig: @Sendable (_ args: [String], _ timeout: TimeInterval) -> String?
 
@@ -118,13 +118,12 @@ enum WideAreaGatewayDiscovery {
         }
 
         var seen = Set<String>()
-        let ordered = ips.filter { value in
+        return ips.filter { value in
             guard self.isTailnetIPv4(value) else { return false }
             if seen.contains(value) { return false }
             seen.insert(value)
             return true
         }
-        return ordered
     }
 
     private static func readTailscaleStatus() -> String? {
@@ -331,5 +330,7 @@ private struct TailscaleStatus: Decodable {
 }
 
 extension Collection {
-    fileprivate var nonEmpty: Self? { isEmpty ? nil : self }
+    fileprivate var nonEmpty: Self? {
+        isEmpty ? nil : self
+    }
 }

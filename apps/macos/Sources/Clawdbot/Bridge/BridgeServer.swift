@@ -141,7 +141,7 @@ actor BridgeServer {
         self.stopGatewayPushTaskIfIdle()
     }
 
-    private struct VoiceTranscriptPayload: Codable, Sendable {
+    private struct VoiceTranscriptPayload: Codable {
         var text: String
         var sessionKey: String?
     }
@@ -221,7 +221,7 @@ actor BridgeServer {
     }
 
     private func handleRequest(nodeId: String, req: BridgeRPCRequest) async -> BridgeRPCResponse {
-        let allowed: Set<String> = ["chat.history", "chat.send", "health"]
+        let allowed: Set = ["chat.history", "chat.send", "health"]
         guard allowed.contains(req.method) else {
             return BridgeRPCResponse(
                 id: req.id,

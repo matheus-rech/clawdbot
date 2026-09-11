@@ -2,7 +2,7 @@ import ClawdbotProtocol
 import Foundation
 
 enum ConfigStore {
-    struct Overrides: Sendable {
+    struct Overrides {
         var isRemoteMode: (@Sendable () async -> Bool)?
         var loadLocal: (@MainActor @Sendable () -> [String: Any])?
         var saveLocal: (@MainActor @Sendable ([String: Any]) -> Void)?

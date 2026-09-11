@@ -130,18 +130,30 @@ struct OnboardingView: View {
         Self.pageOrder(for: self.state.connectionMode, needsBootstrap: self.needsBootstrap)
     }
 
-    var pageCount: Int { self.pageOrder.count }
+    var pageCount: Int {
+        self.pageOrder.count
+    }
+
     var activePageIndex: Int {
         self.activePageIndex(for: self.currentPage)
     }
 
-    var buttonTitle: String { self.currentPage == self.pageCount - 1 ? "Finish" : "Next" }
-    var wizardPageOrderIndex: Int? { self.pageOrder.firstIndex(of: self.wizardPageIndex) }
+    var buttonTitle: String {
+        self.currentPage == self.pageCount - 1 ? "Finish" : "Next"
+    }
+
+    var wizardPageOrderIndex: Int? {
+        self.pageOrder.firstIndex(of: self.wizardPageIndex)
+    }
+
     var isWizardBlocking: Bool {
         self.activePageIndex == self.wizardPageIndex && !self.onboardingWizard.isComplete
     }
 
-    var canAdvance: Bool { !self.isWizardBlocking }
+    var canAdvance: Bool {
+        !self.isWizardBlocking
+    }
+
     var devLinkCommand: String {
         let bundlePath = Bundle.main.bundlePath
         return "ln -sf '\(bundlePath)/Contents/Resources/Relay/clawdbot' /usr/local/bin/clawdbot"

@@ -7,8 +7,13 @@ struct UsageMenuLabelView: View {
     private let paddingTrailing: CGFloat = 14
     private let barHeight: CGFloat = 6
 
-    private var primaryTextColor: Color { .primary }
-    private var secondaryTextColor: Color { .secondary }
+    private var primaryTextColor: Color {
+        .primary
+    }
+
+    private var secondaryTextColor: Color {
+        .secondary
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {

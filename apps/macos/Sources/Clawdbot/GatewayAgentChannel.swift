@@ -1,6 +1,6 @@
 import Foundation
 
-enum GatewayAgentChannel: String, CaseIterable, Sendable {
+enum GatewayAgentChannel: String, CaseIterable {
     case last
     case webchat
     case whatsapp

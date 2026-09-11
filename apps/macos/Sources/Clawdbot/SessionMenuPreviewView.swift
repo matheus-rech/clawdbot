@@ -3,13 +3,13 @@ import ClawdbotKit
 import OSLog
 import SwiftUI
 
-private struct SessionPreviewItem: Identifiable, Sendable {
+private struct SessionPreviewItem: Identifiable {
     let id: String
     let role: PreviewRole
     let text: String
 }
 
-private enum PreviewRole: String, Sendable {
+private enum PreviewRole: String {
     case user
     case assistant
     case tool
@@ -67,7 +67,9 @@ struct SessionMenuPreviewView: View {
     @State private var status: LoadStatus = .loading
 
     private struct PreviewTimeoutError: LocalizedError {
-        var errorDescription: String? { "preview timeout" }
+        var errorDescription: String? {
+            "preview timeout"
+        }
     }
 
     private enum LoadStatus: Equatable {
@@ -128,7 +130,6 @@ struct SessionMenuPreviewView: View {
         }
     }
 
-    @ViewBuilder
     private func previewRow(_ item: SessionPreviewItem) -> some View {
         HStack(alignment: .top, spacing: 4) {
             Text(item.role.label)
