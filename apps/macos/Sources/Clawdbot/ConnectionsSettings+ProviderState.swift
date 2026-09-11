@@ -3,83 +3,147 @@ import SwiftUI
 extension ConnectionsSettings {
     var whatsAppTint: Color {
         guard let status = self.store.snapshot?.whatsapp else { return .secondary }
-        if !status.configured { return .secondary }
-        if !status.linked { return .red }
-        if status.lastError != nil { return .orange }
-        if status.connected { return .green }
-        if status.running { return .orange }
+        if !status.configured {
+            return .secondary
+        }
+        if !status.linked {
+            return .red
+        }
+        if status.lastError != nil {
+            return .orange
+        }
+        if status.connected {
+            return .green
+        }
+        if status.running {
+            return .orange
+        }
         return .orange
     }
 
     var telegramTint: Color {
         guard let status = self.store.snapshot?.telegram else { return .secondary }
-        if !status.configured { return .secondary }
-        if status.lastError != nil { return .orange }
-        if status.probe?.ok == false { return .orange }
-        if status.running { return .green }
+        if !status.configured {
+            return .secondary
+        }
+        if status.lastError != nil {
+            return .orange
+        }
+        if status.probe?.ok == false {
+            return .orange
+        }
+        if status.running {
+            return .green
+        }
         return .orange
     }
 
     var discordTint: Color {
         guard let status = self.store.snapshot?.discord else { return .secondary }
-        if !status.configured { return .secondary }
-        if status.lastError != nil { return .orange }
-        if status.probe?.ok == false { return .orange }
-        if status.running { return .green }
+        if !status.configured {
+            return .secondary
+        }
+        if status.lastError != nil {
+            return .orange
+        }
+        if status.probe?.ok == false {
+            return .orange
+        }
+        if status.running {
+            return .green
+        }
         return .orange
     }
 
     var signalTint: Color {
         guard let status = self.store.snapshot?.signal else { return .secondary }
-        if !status.configured { return .secondary }
-        if status.lastError != nil { return .orange }
-        if status.probe?.ok == false { return .orange }
-        if status.running { return .green }
+        if !status.configured {
+            return .secondary
+        }
+        if status.lastError != nil {
+            return .orange
+        }
+        if status.probe?.ok == false {
+            return .orange
+        }
+        if status.running {
+            return .green
+        }
         return .orange
     }
 
     var imessageTint: Color {
         guard let status = self.store.snapshot?.imessage else { return .secondary }
-        if !status.configured { return .secondary }
-        if status.lastError != nil { return .orange }
-        if status.probe?.ok == false { return .orange }
-        if status.running { return .green }
+        if !status.configured {
+            return .secondary
+        }
+        if status.lastError != nil {
+            return .orange
+        }
+        if status.probe?.ok == false {
+            return .orange
+        }
+        if status.running {
+            return .green
+        }
         return .orange
     }
 
     var whatsAppSummary: String {
         guard let status = self.store.snapshot?.whatsapp else { return "Checking…" }
-        if !status.linked { return "Not linked" }
-        if status.connected { return "Connected" }
-        if status.running { return "Running" }
+        if !status.linked {
+            return "Not linked"
+        }
+        if status.connected {
+            return "Connected"
+        }
+        if status.running {
+            return "Running"
+        }
         return "Linked"
     }
 
     var telegramSummary: String {
         guard let status = self.store.snapshot?.telegram else { return "Checking…" }
-        if !status.configured { return "Not configured" }
-        if status.running { return "Running" }
+        if !status.configured {
+            return "Not configured"
+        }
+        if status.running {
+            return "Running"
+        }
         return "Configured"
     }
 
     var discordSummary: String {
         guard let status = self.store.snapshot?.discord else { return "Checking…" }
-        if !status.configured { return "Not configured" }
-        if status.running { return "Running" }
+        if !status.configured {
+            return "Not configured"
+        }
+        if status.running {
+            return "Running"
+        }
         return "Configured"
     }
 
     var signalSummary: String {
         guard let status = self.store.snapshot?.signal else { return "Checking…" }
-        if !status.configured { return "Not configured" }
-        if status.running { return "Running" }
+        if !status.configured {
+            return "Not configured"
+        }
+        if status.running {
+            return "Running"
+        }
         return "Configured"
     }
 
     var imessageSummary: String {
         guard let status = self.store.snapshot?.imessage else { return "Checking…" }
-        if !status.configured { return "Not configured" }
-        if status.running { return "Running" }
+        if !status.configured {
+            return "Not configured"
+        }
+        if status.running {
+            return "Running"
+        }
         return "Configured"
     }
 
@@ -232,7 +296,9 @@ extension ConnectionsSettings {
         ConnectionProvider.allCases.sorted { lhs, rhs in
             let lhsEnabled = self.providerEnabled(lhs)
             let rhsEnabled = self.providerEnabled(rhs)
-            if lhsEnabled != rhsEnabled { return lhsEnabled && !rhsEnabled }
+            if lhsEnabled != rhsEnabled {
+                return lhsEnabled && !rhsEnabled
+            }
             return lhs.sortOrder < rhs.sortOrder
         }
     }

@@ -68,7 +68,9 @@ actor RemoteTunnelManager {
             "ensure SSH tunnel target=\(settings.target, privacy: .public) " +
                 "identitySet=\(identitySet, privacy: .public)")
 
-        if let local = await self.controlTunnelPortIfRunning() { return local }
+        if let local = await self.controlTunnelPortIfRunning() {
+            return local
+        }
         await self.waitForRestartBackoffIfNeeded()
 
         let desiredPort = UInt16(GatewayEnvironment.gatewayPort())
@@ -94,8 +96,12 @@ actor RemoteTunnelManager {
 
     private func isSshProcess(_ desc: PortGuardian.Descriptor) -> Bool {
         let cmd = desc.command.lowercased()
-        if cmd.contains("ssh") { return true }
-        if let path = desc.executablePath?.lowercased(), path.contains("/ssh") { return true }
+        if cmd.contains("ssh") {
+            return true
+        }
+        if let path = desc.executablePath?.lowercased(), path.contains("/ssh") {
+            return true
+        }
         return false
     }
 
@@ -141,7 +147,9 @@ actor RemoteTunnelManager {
 
     private func kill(pid: Int32) async -> Bool {
         let term = await ShellExecutor.run(command: ["kill", "-TERM", "\(pid)"], cwd: nil, env: nil, timeout: 2)
-        if term.ok { return true }
+        if term.ok {
+            return true
+        }
         let sigkill = await ShellExecutor.run(command: ["kill", "-KILL", "\(pid)"], cwd: nil, env: nil, timeout: 2)
         return sigkill.ok
     }

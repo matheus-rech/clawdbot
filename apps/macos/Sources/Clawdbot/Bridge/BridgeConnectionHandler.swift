@@ -401,7 +401,9 @@ actor BridgeConnectionHandler {
             }
 
             let chunk = try await self.receiveChunk()
-            if chunk.isEmpty { return nil }
+            if chunk.isEmpty {
+                return nil
+            }
             self.buffer.append(chunk)
         }
     }
@@ -424,7 +426,9 @@ actor BridgeConnectionHandler {
     }
 
     private func close(with onDisconnected: (@Sendable (String) async -> Void)? = nil) async {
-        if self.isClosed { return }
+        if self.isClosed {
+            return
+        }
         self.isClosed = true
 
         let nodeId = self.nodeId

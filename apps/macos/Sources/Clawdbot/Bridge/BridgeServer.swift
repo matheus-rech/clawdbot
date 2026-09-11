@@ -19,7 +19,9 @@ actor BridgeServer {
     private var gatewayPushTask: Task<Void, Never>?
 
     func start() async {
-        if self.isRunning { return }
+        if self.isRunning {
+            return
+        }
         self.isRunning = true
 
         do {
@@ -267,7 +269,9 @@ actor BridgeServer {
     }
 
     private func ensureGatewayPushTask() {
-        if self.gatewayPushTask != nil { return }
+        if self.gatewayPushTask != nil {
+            return
+        }
         self.gatewayPushTask = Task { [weak self] in
             guard let self else { return }
             do {
@@ -277,7 +281,9 @@ actor BridgeServer {
             }
             let stream = await GatewayConnection.shared.subscribe()
             for await push in stream {
-                if Task.isCancelled { return }
+                if Task.isCancelled {
+                    return
+                }
                 await self.forwardGatewayPush(push)
             }
         }
@@ -350,7 +356,9 @@ actor BridgeServer {
         let ip = await self.connections[nodeId]?.remoteAddress()
 
         var tags: [String] = ["node", "ios"]
-        if let platform { tags.append(platform) }
+        if let platform {
+            tags.append(platform)
+        }
 
         let summary = [
             "Node: \(host)\(ip.map { " (\($0))" } ?? "")",
@@ -368,8 +376,12 @@ actor BridgeServer {
             "reason": ClawdbotProtocol.AnyCodable(reason),
             "tags": ClawdbotProtocol.AnyCodable(tags),
         ]
-        if let ip { params["ip"] = ClawdbotProtocol.AnyCodable(ip) }
-        if let version { params["version"] = ClawdbotProtocol.AnyCodable(version) }
+        if let ip {
+            params["ip"] = ClawdbotProtocol.AnyCodable(ip)
+        }
+        if let version {
+            params["version"] = ClawdbotProtocol.AnyCodable(version)
+        }
         await GatewayConnection.shared.sendSystemEvent(params)
     }
 
@@ -378,7 +390,9 @@ actor BridgeServer {
         self.presenceTasks[nodeId] = Task.detached { [weak self] in
             while !Task.isCancelled {
                 try? await Task.sleep(nanoseconds: 180 * 1_000_000_000)
-                if Task.isCancelled { return }
+                if Task.isCancelled {
+                    return
+                }
                 await self?.beaconPresence(nodeId: nodeId, reason: "periodic")
             }
         }
@@ -412,11 +426,21 @@ actor BridgeServer {
             let deviceFamily = hello.deviceFamily?.trimmingCharacters(in: .whitespacesAndNewlines).nonEmpty
             let modelIdentifier = hello.modelIdentifier?.trimmingCharacters(in: .whitespacesAndNewlines).nonEmpty
 
-            if updated.displayName != name { updated.displayName = name }
-            if updated.platform != platform { updated.platform = platform }
-            if updated.version != version { updated.version = version }
-            if updated.deviceFamily != deviceFamily { updated.deviceFamily = deviceFamily }
-            if updated.modelIdentifier != modelIdentifier { updated.modelIdentifier = modelIdentifier }
+            if updated.displayName != name {
+                updated.displayName = name
+            }
+            if updated.platform != platform {
+                updated.platform = platform
+            }
+            if updated.version != version {
+                updated.version = version
+            }
+            if updated.deviceFamily != deviceFamily {
+                updated.deviceFamily = deviceFamily
+            }
+            if updated.modelIdentifier != modelIdentifier {
+                updated.modelIdentifier = modelIdentifier
+            }
 
             if updated != paired {
                 try await store.upsert(updated)

@@ -323,7 +323,9 @@ actor VoiceWakeRuntime {
             }
         }
 
-        if self.isCapturing { return }
+        if self.isCapturing {
+            return
+        }
 
         let gateConfig = WakeWordGateConfig(triggers: config.triggers)
         var usedFallback = false
@@ -700,7 +702,9 @@ actor VoiceWakeRuntime {
     }
 
     private func restartRecognizerIfIdleAndOverlayHidden() async {
-        if self.isCapturing { return }
+        if self.isCapturing {
+            return
+        }
         self.restartRecognizer()
     }
 

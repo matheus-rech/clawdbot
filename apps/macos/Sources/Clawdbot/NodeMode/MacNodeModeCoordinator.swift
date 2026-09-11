@@ -361,7 +361,9 @@ final class MacNodeModeCoordinator {
             func finish(_ endpoint: NWEndpoint?) {
                 self.lock.lock()
                 defer { lock.unlock() }
-                if self.resolved { return }
+                if self.resolved {
+                    return
+                }
                 self.resolved = true
                 for browser in self.browsers {
                     browser.cancel()
@@ -396,7 +398,13 @@ final class MacNodeModeCoordinator {
                         return
                     }
 
-                    if let result = results.first(where: { if case .service = $0.endpoint { true } else { false } }) {
+                    if let result = results.first(where: {
+                        if case .service = $0.endpoint {
+                            true
+                        } else {
+                            false
+                        }
+                    }) {
                         state.finish(result.endpoint)
                     }
                 }

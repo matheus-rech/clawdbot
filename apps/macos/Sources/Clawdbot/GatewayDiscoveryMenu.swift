@@ -99,7 +99,9 @@ struct GatewayDiscoveryInlineList: View {
     private func sanitizedTailnetHost(_ host: String?) -> String? {
         guard let host else { return nil }
         let trimmed = host.trimmingCharacters(in: .whitespacesAndNewlines)
-        if trimmed.isEmpty { return nil }
+        if trimmed.isEmpty {
+            return nil
+        }
         if trimmed.hasSuffix(".internal.") || trimmed.hasSuffix(".internal") {
             return nil
         }
@@ -107,8 +109,12 @@ struct GatewayDiscoveryInlineList: View {
     }
 
     private func rowBackground(selected: Bool, hovered: Bool) -> Color {
-        if selected { return Color.accentColor.opacity(0.12) }
-        if hovered { return Color.secondary.opacity(0.08) }
+        if selected {
+            return Color.accentColor.opacity(0.12)
+        }
+        if hovered {
+            return Color.secondary.opacity(0.08)
+        }
         return Color.clear
     }
 }

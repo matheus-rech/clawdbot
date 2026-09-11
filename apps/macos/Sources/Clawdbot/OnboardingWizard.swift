@@ -119,14 +119,18 @@ final class OnboardingWizardModel {
         self.status = anyCodableStringValue(res.status) ?? (res.done ? "done" : "running")
         self.errorMessage = res.error
         self.currentStep = decodeWizardStep(res.step)
-        if res.done { self.currentStep = nil }
+        if res.done {
+            self.currentStep = nil
+        }
     }
 
     private func applyNextResult(_ res: WizardNextResult) {
         self.status = anyCodableStringValue(res.status) ?? self.status
         self.errorMessage = res.error
         self.currentStep = decodeWizardStep(res.step)
-        if res.done { self.currentStep = nil }
+        if res.done {
+            self.currentStep = nil
+        }
         if res.done || anyCodableStringValue(res.status) == "done" || anyCodableStringValue(res.status) == "cancelled"
             || anyCodableStringValue(res.status) == "error"
         {
@@ -299,8 +303,12 @@ struct OnboardingWizardStepView: View {
 
     private var isBlocked: Bool {
         let type = wizardStepType(step)
-        if type == "select" { return self.optionItems.isEmpty }
-        if type == "multiselect" { return self.optionItems.isEmpty }
+        if type == "select" {
+            return self.optionItems.isEmpty
+        }
+        if type == "multiselect" {
+            return self.optionItems.isEmpty
+        }
         return false
     }
 

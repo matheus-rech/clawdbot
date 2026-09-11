@@ -142,7 +142,9 @@ actor GatewayChannelActor {
         while self.shouldReconnect {
             try? await Task.sleep(nanoseconds: 30 * 1_000_000_000) // 30s cadence
             guard self.shouldReconnect else { return }
-            if self.connected { continue }
+            if self.connected {
+                continue
+            }
             do {
                 try await self.connect()
             } catch {
@@ -153,7 +155,9 @@ actor GatewayChannelActor {
     }
 
     func connect() async throws {
-        if self.connected, self.task?.state == .running { return }
+        if self.connected, self.task?.state == .running {
+            return
+        }
         if self.isConnecting {
             try await withCheckedThrowingContinuation { cont in
                 self.connectWaiters.append(cont)
@@ -339,7 +343,9 @@ actor GatewayChannelActor {
                 }
                 self.lastSeq = seq
             }
-            if evt.event == "tick" { self.lastTick = Date() }
+            if evt.event == "tick" {
+                self.lastTick = Date()
+            }
             await self.pushHandler?(.event(evt))
         default:
             break
@@ -424,7 +430,9 @@ actor GatewayChannelActor {
                         guard let self else { return }
                         await self.scheduleReconnect()
                     }
-                    if let waiter { waiter.resume(throwing: wrapped) }
+                    if let waiter {
+                        waiter.resume(throwing: wrapped)
+                    }
                 }
             }
         }

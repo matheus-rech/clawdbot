@@ -402,7 +402,9 @@ final class PermissionMonitor {
     }
 
     private func checkStatus(force: Bool) async {
-        if self.isChecking { return }
+        if self.isChecking {
+            return
+        }
         let now = Date()
         if !force, let lastCheck, now.timeIntervalSince(lastCheck) < self.minimumCheckInterval {
             return

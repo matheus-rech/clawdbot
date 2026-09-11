@@ -473,9 +473,14 @@ struct ConfigSettings: View {
         let talk = parsed["talk"] as? [String: Any]
 
         let loadedModel: String = {
-            if let raw = defaults?["model"] as? String { return raw }
+            if let raw = defaults?["model"] as? String {
+                return raw
+            }
             if let modelDict = defaults?["model"] as? [String: Any],
-               let primary = modelDict["primary"] as? String { return primary }
+               let primary = modelDict["primary"] as? String
+            {
+                return primary
+            }
             return ""
         }()
         if !loadedModel.isEmpty {
@@ -491,18 +496,32 @@ struct ConfigSettings: View {
                 self.heartbeatMinutes = minutes
             }
         }
-        if let heartbeatBody, !heartbeatBody.isEmpty { self.heartbeatBody = heartbeatBody }
+        if let heartbeatBody, !heartbeatBody.isEmpty {
+            self.heartbeatBody = heartbeatBody
+        }
 
         if let browser {
-            if let enabled = browser["enabled"] as? Bool { self.browserEnabled = enabled }
-            if let url = browser["controlUrl"] as? String, !url.isEmpty { self.browserControlUrl = url }
-            if let color = browser["color"] as? String, !color.isEmpty { self.browserColorHex = color }
-            if let attachOnly = browser["attachOnly"] as? Bool { self.browserAttachOnly = attachOnly }
+            if let enabled = browser["enabled"] as? Bool {
+                self.browserEnabled = enabled
+            }
+            if let url = browser["controlUrl"] as? String, !url.isEmpty {
+                self.browserControlUrl = url
+            }
+            if let color = browser["color"] as? String, !color.isEmpty {
+                self.browserColorHex = color
+            }
+            if let attachOnly = browser["attachOnly"] as? Bool {
+                self.browserAttachOnly = attachOnly
+            }
         }
 
         if let talk {
-            if let voice = talk["voiceId"] as? String { self.talkVoiceId = voice }
-            if let apiKey = talk["apiKey"] as? String { self.talkApiKey = apiKey }
+            if let voice = talk["voiceId"] as? String {
+                self.talkVoiceId = voice
+            }
+            if let apiKey = talk["apiKey"] as? String {
+                self.talkApiKey = apiKey
+            }
             if let interrupt = talk["interruptOnSpeech"] as? Bool {
                 self.talkInterruptOnSpeech = interrupt
             }
@@ -611,9 +630,13 @@ struct ConfigSettings: View {
 
         browser["enabled"] = draft.browserEnabled
         let trimmedUrl = draft.browserControlUrl.trimmingCharacters(in: .whitespacesAndNewlines)
-        if !trimmedUrl.isEmpty { browser["controlUrl"] = trimmedUrl }
+        if !trimmedUrl.isEmpty {
+            browser["controlUrl"] = trimmedUrl
+        }
         let trimmedColor = draft.browserColorHex.trimmingCharacters(in: .whitespacesAndNewlines)
-        if !trimmedColor.isEmpty { browser["color"] = trimmedColor }
+        if !trimmedColor.isEmpty {
+            browser["color"] = trimmedColor
+        }
         browser["attachOnly"] = draft.browserAttachOnly
         root["browser"] = browser
 
@@ -670,18 +693,28 @@ struct ConfigSettings: View {
     }
 
     private var apiKeyStatusLabel: String {
-        if self.hasEnvApiKey { return "ElevenLabs API key: found (environment)" }
+        if self.hasEnvApiKey {
+            return "ElevenLabs API key: found (environment)"
+        }
         if !self.talkApiKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             return "ElevenLabs API key: stored in config"
         }
-        if self.gatewayApiKeyFound { return "ElevenLabs API key: found (gateway)" }
+        if self.gatewayApiKeyFound {
+            return "ElevenLabs API key: found (gateway)"
+        }
         return "ElevenLabs API key: missing"
     }
 
     private var apiKeyStatusColor: Color {
-        if self.hasEnvApiKey { return .green }
-        if !self.talkApiKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty { return .green }
-        if self.gatewayApiKeyFound { return .green }
+        if self.hasEnvApiKey {
+            return .green
+        }
+        if !self.talkApiKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            return .green
+        }
+        if self.gatewayApiKeyFound {
+            return .green
+        }
         return .red
     }
 
@@ -731,9 +764,15 @@ struct ConfigSettings: View {
     }
 
     private static func isLoopbackHost(_ host: String) -> Bool {
-        if host == "localhost" { return true }
-        if host == "127.0.0.1" { return true }
-        if host == "::1" { return true }
+        if host == "localhost" {
+            return true
+        }
+        if host == "127.0.0.1" {
+            return true
+        }
+        if host == "::1" {
+            return true
+        }
         return false
     }
 
@@ -799,7 +838,9 @@ struct ConfigSettings: View {
         if let choice = self.selectedModelChoice {
             return "\(choice.name) — \(choice.provider.uppercased())"
         }
-        if !self.configModel.isEmpty { return self.configModel }
+        if !self.configModel.isEmpty {
+            return self.configModel
+        }
         return "Select model"
     }
 
@@ -838,7 +879,9 @@ struct ConfigSettings: View {
     private func matchesConfigModel(_ choice: ModelChoice) -> Bool {
         let configured = self.configModel.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !configured.isEmpty else { return false }
-        if configured.caseInsensitiveCompare(choice.id) == .orderedSame { return true }
+        if configured.caseInsensitiveCompare(choice.id) == .orderedSame {
+            return true
+        }
         let ref = self.modelRef(for: choice)
         return configured.caseInsensitiveCompare(ref) == .orderedSame
     }
@@ -850,7 +893,9 @@ struct ConfigSettings: View {
         guard !cleaned.isEmpty else { return nil }
         return self.models.first(where: { choice in
             let id = choice.id.lowercased()
-            if id == cleaned { return true }
+            if id == cleaned {
+                return true
+            }
             return self.modelRef(for: choice).lowercased() == cleaned
         })
     }

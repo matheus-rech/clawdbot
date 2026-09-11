@@ -6,9 +6,13 @@ enum CommandResolver {
 
     static func gatewayEntrypoint(in root: URL) -> String? {
         let distEntry = root.appendingPathComponent("dist/index.js").path
-        if FileManager.default.isReadableFile(atPath: distEntry) { return distEntry }
+        if FileManager.default.isReadableFile(atPath: distEntry) {
+            return distEntry
+        }
         let binEntry = root.appendingPathComponent("bin/clawdbot.js").path
-        if FileManager.default.isReadableFile(atPath: binEntry) { return binEntry }
+        if FileManager.default.isReadableFile(atPath: binEntry) {
+            return binEntry
+        }
         return nil
     }
 
@@ -139,7 +143,9 @@ enum CommandResolver {
             for i in 0..<maxCount {
                 let ai = i < va.count ? va[i] : 0
                 let bi = i < vb.count ? vb[i] : 0
-                if ai != bi { return ai > bi }
+                if ai != bi {
+                    return ai > bi
+                }
             }
             // If identical numerically, keep stable ordering.
             return a > b
@@ -182,8 +188,12 @@ enum CommandResolver {
     }
 
     static func hasAnyClawdbotInvoker(searchPaths: [String]? = nil) -> Bool {
-        if self.clawdbotExecutable(searchPaths: searchPaths) != nil { return true }
-        if self.findExecutable(named: "pnpm", searchPaths: searchPaths) != nil { return true }
+        if self.clawdbotExecutable(searchPaths: searchPaths) != nil {
+            return true
+        }
+        if self.findExecutable(named: "pnpm", searchPaths: searchPaths) != nil {
+            return true
+        }
         if self.findExecutable(named: "node", searchPaths: searchPaths) != nil,
            self.nodeCliPath() != nil
         {
@@ -267,7 +277,9 @@ enum CommandResolver {
             "-o", "StrictHostKeyChecking=accept-new",
             "-o", "UpdateHostKeys=yes",
         ]
-        if parsed.port > 0 { args.append(contentsOf: ["-p", String(parsed.port)]) }
+        if parsed.port > 0 {
+            args.append(contentsOf: ["-p", String(parsed.port)])
+        }
         if !settings.identity.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             args.append(contentsOf: ["-i", settings.identity])
         }
@@ -437,7 +449,9 @@ enum CommandResolver {
     }
 
     private static func shellQuote(_ text: String) -> String {
-        if text.isEmpty { return "''" }
+        if text.isEmpty {
+            return "''"
+        }
         let escaped = text.replacingOccurrences(of: "'", with: "'\\''")
         return "'\(escaped)'"
     }

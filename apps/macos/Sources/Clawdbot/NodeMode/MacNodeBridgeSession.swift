@@ -297,7 +297,11 @@ actor MacNodeBridgeSession {
         line.append(0x0A)
         try await withCheckedThrowingContinuation(isolation: self) { (cont: CheckedContinuation<Void, Error>) in
             connection.send(content: line, completion: .contentProcessed { err in
-                if let err { cont.resume(throwing: err) } else { cont.resume(returning: ()) }
+                if let err {
+                    cont.resume(throwing: err)
+                } else {
+                    cont.resume(returning: ())
+                }
             })
         }
     }
@@ -310,7 +314,9 @@ actor MacNodeBridgeSession {
                 return String(data: line, encoding: .utf8)
             }
             let chunk = try await self.receiveChunk()
-            if chunk.isEmpty { return nil }
+            if chunk.isEmpty {
+                return nil
+            }
             self.buffer.append(chunk)
         }
     }
@@ -417,7 +423,9 @@ actor MacNodeBridgeSession {
 
     private func sendInvokeResponse(_ response: BridgeInvokeResponse, taskID: UUID) async {
         defer { self.invokeTasks[taskID] = nil }
-        if Task.isCancelled { return }
+        if Task.isCancelled {
+            return
+        }
         do {
             try await self.send(response)
         } catch {

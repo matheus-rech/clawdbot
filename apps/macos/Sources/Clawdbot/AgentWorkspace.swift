@@ -25,7 +25,9 @@ enum AgentWorkspace {
     static func displayPath(for url: URL) -> String {
         let home = FileManager.default.homeDirectoryForCurrentUser.path
         let path = url.path
-        if path == home { return "~" }
+        if path == home {
+            return "~"
+        }
         if path.hasPrefix(home + "/") {
             return "~/" + String(path.dropFirst(home.count + 1))
         }
@@ -34,7 +36,9 @@ enum AgentWorkspace {
 
     static func resolveWorkspaceURL(from userInput: String?) -> URL {
         let trimmed = userInput?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        if trimmed.isEmpty { return ClawdbotConfigFile.defaultWorkspaceURL() }
+        if trimmed.isEmpty {
+            return ClawdbotConfigFile.defaultWorkspaceURL()
+        }
         let expanded = (trimmed as NSString).expandingTildeInPath
         return URL(fileURLWithPath: expanded, isDirectory: true)
     }
